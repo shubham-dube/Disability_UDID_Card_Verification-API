@@ -6,7 +6,7 @@ app = Flask(__name__)
 url = "https://swavlambancard.gov.in/api/rest/trackapplication"
 
 @app.route("/api/v1/get_UDID_details", methods=["POST"])
-def getCADetails():
+def get_UDID_details():
     try:
         UDID = request.json.get("UDID_Number")
         session = requests.Session()
