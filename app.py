@@ -1,13 +1,14 @@
 from flask import Flask, jsonify, Response, make_response, request
 import requests
+from asgiref.wsgi import WsgiToAsgi
 
 app = Flask(__name__)
-
-url = "https://swavlambancard.gov.in/api/rest/trackapplication"
+asgi_app = WsgiToAsgi(app)
 
 @app.route("/api/v1/get_UDID_details", methods=["POST"])
 def get_UDID_details():
     try:
+        url = "https://swavlambancard.gov.in/api/rest/trackapplication"
         UDID = request.json.get("UDID_Number")
         session = requests.Session()
 
@@ -24,4 +25,5 @@ def get_UDID_details():
         return jsonify({"error": "Error in fetching UDID Number Details"})
 
 if __name__ == "__main__":
-    app.run()
+    import uvicorn
+    uvicorn.run(asgi_app, host='0.0.0.0', port=5001)
